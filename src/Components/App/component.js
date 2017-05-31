@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import BababaButton from '../BababaButton/BababaButton';
-import BababaCounter from '../BababaCounter/BababaCounter';
-import BababaLogo from '../BababaLogo/BababaLogo';
+import BababaButton from '../BababaButton/component';
+import BababaCounter from '../BababaCounter/component';
+import BababaLogo from '../BababaLogo/component';
 
 class App extends Component {
     constructor(props) {
