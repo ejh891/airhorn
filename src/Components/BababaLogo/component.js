@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styles from './styles.css';
 
 class BababaLogo extends Component {
     constructor(props) {
@@ -7,7 +8,9 @@ class BababaLogo extends Component {
     }
     render() {
         return(
-            <img alt="logo" src="/apple-touch-icon.png" />
+            <div id="logo" className={styles.logo}>
+                <img alt="logo" src="/apple-touch-icon.png" />
+            </div>
         )
     }
 }
