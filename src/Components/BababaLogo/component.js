@@ -7,7 +7,7 @@ class BababaLogo extends Component {
     }
     render() {
         return(
-            <div>Logo</div>
+            <img alt="logo" src="/apple-touch-icon.png" />
         )
     }
 }
