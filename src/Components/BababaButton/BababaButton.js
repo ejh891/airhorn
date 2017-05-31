@@ -8,7 +8,7 @@ class BababaButton extends Component {
     render() {
         return(
             <div id="action">
-                <input id="button" class="btn btn-success" type="button" value="Bababa!" />
+                <input id="button" className="btn btn-success" type="button" value="Bababa!" />
             </div>
         )
     }
