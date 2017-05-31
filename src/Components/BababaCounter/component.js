@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styles from './styles.css';
 
 class BababaCounter extends Component {
     constructor(props) {
@@ -7,7 +8,7 @@ class BababaCounter extends Component {
     }
     render() {
         return(
-            <div>Counter</div>
+            <div id="count" className={styles.count}>Counter</div>
         )
     }
 }
