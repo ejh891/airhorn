@@ -8,7 +8,7 @@ class BababaCounter extends Component {
     }
     render() {
         return(
-            <div id="count" className={styles.count}>Counter</div>
+            <div id="count" className={styles.count}>{this.props.count}</div>
         )
     }
 }

@@ -9,7 +9,7 @@ class BababaButton extends Component {
     render() {
         return(
             <div id="action">
-                <input id="button" className={"btn btn-success " + styles.button} type="button" value="Bababa!" />
+                <input id="button" className={"btn btn-success " + styles.button} type="button" value="Bababa!" onClick={this.props.handleClick}/>
             </div>
         )
     }

@@ -4,21 +4,24 @@ import BababaCounter from '../BababaCounter/component';
 import BababaLogo from '../BababaLogo/component';
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {}
+    state = {counter: 0}
+    incrementCounter = () => {
+        this.setState( (prevState) => {
+            return {counter: prevState.counter + 1};
+        });
     }
+
     render() {
         return(
             <div className="container">
                 <div className="row">
                     <div className="col-sm-12">
-                        <BababaButton />
+                        <BababaButton handleClick={this.incrementCounter}/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-sm-12">
-                        <BababaCounter />
+                        <BababaCounter count={this.state.counter}/>
                     </div>
                 </div>
                 <div className="row">
