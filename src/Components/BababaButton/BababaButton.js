@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styles from './styles.css';
 
 class BababaButton extends Component {
     constructor(props) {
@@ -8,7 +9,7 @@ class BababaButton extends Component {
     render() {
         return(
             <div id="action">
-                <input id="button" className="btn btn-success" type="button" value="Bababa!" />
+                <input id="button" className={"btn btn-success " + styles.button} type="button" value="Bababa!" />
             </div>
         )
     }
