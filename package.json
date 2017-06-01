@@ -10,11 +10,13 @@
     "react-howler": "^3.6.2"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0",  
+    "foreman": "^2.0.0",
+    "nodemon": "^1.11.0",
     "react-scripts": "1.0.7"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "nf start -p 3000",
+    "start-app": "react-scripts start",
     "start-server": "nodemon server.js",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
