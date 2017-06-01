@@ -4,7 +4,8 @@ import BababaCounter from '../BababaCounter/component';
 import BababaLogo from '../BababaLogo/component';
 
 class App extends Component {
-    state = {counter: 0}
+    state = {counter: 0};
+
     incrementCounter = () => {
         this.setState( (prevState) => {
             return {counter: prevState.counter + 1};
@@ -16,7 +17,7 @@ class App extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col-sm-12">
-                        <BababaButton handleClick={this.incrementCounter}/>
+                        <BababaButton incrementCounter={this.incrementCounter}/>
                     </div>
                 </div>
                 <div className="row">
