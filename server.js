@@ -7,7 +7,7 @@ var port = process.env.API_PORT || 3001;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var BababasDb = require('./data/bababas');
+var BababasDb = require('./data/bababa');
 
 var COUNT;
 
@@ -54,7 +54,7 @@ app.use(function(req, res, next) {
  next();
 });
 
-app.post('/incrementCounter', function(req, res) {
+app.post('/api/incrementCounter', function(req, res) {
   writeCounter(COUNT + 1, function(err, counter) {
         if (err) {
           console.log(err);
@@ -67,7 +67,7 @@ app.post('/incrementCounter', function(req, res) {
     });
 });
 
-app.get('/readCounter', function(req, res) {
+app.get('/api/readCounter', function(req, res) {
   var data = {};
   readCounter(function(err, result) {
       if (err) { 
@@ -85,7 +85,7 @@ app.get('/readCounter', function(req, res) {
 });
 
 var subscriberId = 0;
-app.get('/subscribeToCounter', function(req, res) {
+app.get('/api/subscribeToCounter', function(req, res) {
   var subscriber = {
     id: subscriberId++,
     res: res,

@@ -16,11 +16,24 @@ class App extends Component {
         });
     }
 
+    subscribeToCounter = () => {
+        axios.get("http://localhost:3001/api/subscribeToCounter")
+        .then(res => {
+            if (res.data !== undefined && res.data.count !== undefined) {
+                this.setState({counter: res.data.count});
+            }
+            
+            this.subscribeToCounter();
+        });
+    }
+
     componentDidMount() {
         axios.get("http://localhost:3001/api/readCounter")
         .then(res => {
             this.setState({counter: res.data.count});
         });
+
+        this.subscribeToCounter();
     }
 
     render() {
