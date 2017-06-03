@@ -14,8 +14,6 @@
     "socket.io-react": "^1.1.2"
   },
   "devDependencies": {
-    "foreman": "^2.0.0",
-    "nodemon": "^1.11.0",
     "react-scripts": "1.0.7"
   },
   "scripts": {
