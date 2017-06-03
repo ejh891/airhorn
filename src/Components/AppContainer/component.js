@@ -7,12 +7,6 @@ import App from '../App/component';
 class AppContainer extends Component {
     socket = io.connect();
 
-    ComponentDidMount() {
-        this.socket.on('message', function(message) {
-            console.log(message);
-        });
-    }
-
     render() {
         return(
             <SocketProvider socket={this.socket}>
