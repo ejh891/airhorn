@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 import App from '../App/component';
 
 class AppContainer extends Component {
-    socket = io.connect('http://localhost:3001');
+    socket = io.connect();
 
     ComponentDidMount() {
         this.socket.on('message', function(message) {

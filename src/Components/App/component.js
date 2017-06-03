@@ -11,11 +11,11 @@ class App extends Component {
     state = {counter: 0};
     
     incrementCounter = () => {
-        axios.post("http://localhost:3001/api/incrementCounter")
+        axios.post("/api/incrementCounter")
     }
 
     componentDidMount() {
-        axios.get("http://localhost:3001/api/readCounter")
+        axios.get("/api/readCounter")
         .then((res) => {
             this.setState({counter: res.data.count});
         });
