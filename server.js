@@ -4,12 +4,14 @@ var app = express();
 var httpServer = require('http').Server(app);
 var socketServer = require('socket.io')(httpServer);
 
-var port = process.env.API_PORT || 3001;
+var port = process.env.PORT || 3001;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var AirhornDb = require('./data/airhornDb');
+
+app.use('/', express.static(__dirname + '/build'));
 
 // prevent Cross Origin Resource Sharing errors
 app.use((req, res, next) => {
