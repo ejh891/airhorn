@@ -44,5 +44,5 @@ app.get('/api/readCounter', (req, res) => {
 });
 
 httpServer.listen(port, () => {
-    console.log('Api listening on port ' + port);
+    console.log('App running on port: ' + port);
 });
