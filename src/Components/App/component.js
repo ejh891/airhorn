@@ -1,39 +1,28 @@
 import React, { Component } from 'react';
+
 import axios from 'axios';
+import { socketConnect } from 'socket.io-react';
+
 import BababaButton from '../BababaButton/component';
 import BababaCounter from '../BababaCounter/component';
 import BababaLogo from '../BababaLogo/component';
 
 class App extends Component {
     state = {counter: 0};
-
+    
     incrementCounter = () => {
         axios.post("http://localhost:3001/api/incrementCounter")
-        .then(res => {
-            this.setState( (prevState) => {
-                return {counter: prevState.counter + 1};
-            });
-        });
-    }
-
-    subscribeToCounter = () => {
-        axios.get("http://localhost:3001/api/subscribeToCounter")
-        .then(res => {
-            if (res.data !== undefined && res.data.count !== undefined) {
-                this.setState({counter: res.data.count});
-            }
-            
-            this.subscribeToCounter();
-        });
     }
 
     componentDidMount() {
         axios.get("http://localhost:3001/api/readCounter")
-        .then(res => {
+        .then((res) => {
             this.setState({counter: res.data.count});
         });
 
-        this.subscribeToCounter();
+        this.props.socket.on('updatedCount', (count) => {
+            this.setState({counter: count});
+        });
     }
 
     render() {
@@ -59,4 +48,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default socketConnect(App);

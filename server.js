@@ -1,52 +1,18 @@
 var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
+var httpServer = require('http').Server(app);
+var socketServer = require('socket.io')(httpServer);
 
 var port = process.env.API_PORT || 3001;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var BababasDb = require('./data/bababa');
-
-var COUNT;
-
-var readCounter = function(callback) {
-    if (COUNT !== undefined) {
-      var result = {};
-      result._doc = {};
-      result._doc.count = COUNT;
-      callback(undefined, result);
-    }
-    else {
-      BababasDb.findOne({}, callback);
-    }
-};
-
-var writeCounter = function(newCount, callback) {
-    BababasDb.findOneAndUpdate({}, {count: newCount}, callback);
-};
-
-var subscribers = [];
-setInterval(function() {
-  var subscriberIds = subscribers.map(function(o) { return o.id });
-  console.log("subscribers: " + subscriberIds.toString());
-}, 3*1000);
-
-// process each subscriber and send the latest count
-var notifySubscribers = function() {
-  while (subscribers.length > 0) {
-    var subscriber = subscribers.shift();
-    clearTimeout(subscriber.timeoutId);
-    console.log("subscriber: " + subscriber.id + " was notified");
-    var data = {};
-    data.count = COUNT;
-    subscriber.res.json(data);
-  }
-}
+var AirhornDb = require('./data/airhornDb');
 
 // prevent Cross Origin Resource Sharing errors
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
  res.setHeader('Access-Control-Allow-Origin', '*');
  res.setHeader('Access-Control-Allow-Credentials', 'true');
  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
@@ -54,54 +20,27 @@ app.use(function(req, res, next) {
  next();
 });
 
-app.post('/api/incrementCounter', function(req, res) {
-  writeCounter(COUNT + 1, function(err, counter) {
+app.post('/api/incrementCounter', (req, res) => {
+  AirhornDb.incrementCounter((err, count) => {
         if (err) {
           console.log(err);
           res.sendStatus(500);
-        } else {
-          COUNT++;
-          notifySubscribers();
-          res.sendStatus(200);
+        } 
+        else {
+            socketServer.emit('updatedCount', count);
+            res.sendStatus(200);
         }
     });
 });
 
-app.get('/api/readCounter', function(req, res) {
+app.get('/api/readCounter', (req, res) => {
   var data = {};
-  readCounter(function(err, result) {
-      if (err) { 
-        console.log(err);
-      }
-      else if (!result) {
-        console.log('No documents found in database');
-      }
-      else {
-        COUNT = result._doc.count;
-        data.count = COUNT;
+  AirhornDb.readCounter((count) => {
+        data.count = count;
         res.json(data);
-      }
     });
 });
 
-var subscriberId = 0;
-app.get('/api/subscribeToCounter', function(req, res) {
-  var subscriber = {
-    id: subscriberId++,
-    res: res,
-    timeoutId: setTimeout(function () {
-      console.log("subscriber: " + subscriber.id + " timed out");
-      var subscriberIndex = subscribers.indexOf(subscriber);
-      if (subscriberIndex !== -1) {
-        subscribers.splice(subscriberIndex, 1);
-        subscriber.res.json({});
-      }
-    }, 25*1000)
-  };
-  console.log("registered subscriber: " + subscriber.id);
-  subscribers.push(subscriber);
-});
-
-app.listen(port, function() {
+httpServer.listen(port, () => {
     console.log('Api listening on port ' + port);
-})
+});

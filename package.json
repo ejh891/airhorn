@@ -9,7 +9,9 @@
     "mongoose": "^4.10.4",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "react-howler": "^3.6.2"
+    "react-howler": "^3.6.2",
+    "socket.io": "^2.0.2",
+    "socket.io-react": "^1.1.2"
   },
   "devDependencies": {
     "foreman": "^2.0.0",
@@ -17,7 +19,6 @@
     "react-scripts": "1.0.7"
   },
   "scripts": {
-    "start": "nf start -p 3000",
     "start-app": "react-scripts start",
     "start-server": "nodemon server.js",
     "build": "react-scripts build",
