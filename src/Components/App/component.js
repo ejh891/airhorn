@@ -8,10 +8,21 @@ import BababaCounter from '../BababaCounter/component';
 import BababaLogo from '../BababaLogo/component';
 
 class App extends Component {
-    state = {counter: 0};
+    state = {
+        counter: 0,
+        buttonDisabled: false
+    };
     
     incrementCounter = () => {
         axios.post("/api/incrementCounter")
+    }
+
+    audioOnStart = () => {
+        this.setState({buttonDisabled: true});
+    }
+
+    audioOnEnd = () => {
+        this.setState({buttonDisabled: false});
     }
 
     componentDidMount() {
@@ -30,7 +41,12 @@ class App extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col-sm-12">
-                        <BababaButton incrementCounter={this.incrementCounter}/>
+                        <BababaButton 
+                            incrementCounter={this.incrementCounter}
+                            buttonDisabled={this.state.buttonDisabled}
+                            audioOnStart={this.audioOnStart}
+                            audioOnEnd={this.audioOnEnd}
+                        />
                     </div>
                 </div>
                 <div className="row">
