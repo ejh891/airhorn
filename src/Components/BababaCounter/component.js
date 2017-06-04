@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from './styles.css';
+import styles from './styles.js';
 
 class BababaCounter extends Component {
     constructor(props) {
@@ -8,7 +8,7 @@ class BababaCounter extends Component {
     }
     render() {
         return(
-            <div id="count" className={styles.count}>{this.props.count}</div>
+            <div id="count" style={styles.count}>{this.props.count}</div>
         )
     }
 }
