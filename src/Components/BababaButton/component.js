@@ -27,7 +27,7 @@ class BababaButton extends Component {
                 <div id="action">
                     <input id="button" className="btn btn-success" style={styles.button} type="button" value="Bababa!" onClick={this.handleClick}/>
                 </div>
-                <ReactHowler src="/airhorn.mp3" playing={this.state.playing} onPlay={this.onAudioStart} onEnd={this.onAudioEnd}/>
+                <ReactHowler src="/airhorn.mp3" html5={true} playing={this.state.playing} onPlay={this.onAudioStart} onEnd={this.onAudioEnd}/>
             </div>
         )
     }
