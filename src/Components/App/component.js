@@ -6,11 +6,13 @@ import { socketConnect } from 'socket.io-react';
 import BababaButton from '../BababaButton/component';
 import Counter from '../Counter/component';
 import MuteButton from '../MuteButton/component';
+import ReactHowler from 'react-howler';
 
 class App extends Component {
     state = {
         counter: 0,
         buttonDisabled: false,
+        playing: false,
         mute: true
     };
     
@@ -18,12 +20,16 @@ class App extends Component {
         axios.post("/api/incrementCounter")
     }
 
+    audioPlay = () => {
+        this.setState({playing: true});
+    }
+
     audioOnStart = () => {
         this.setState({buttonDisabled: true});
     }
 
     audioOnEnd = () => {
-        this.setState({buttonDisabled: false});
+        this.setState({buttonDisabled: false, playing: false});
     }
 
     muteOnClick = () => {
@@ -39,7 +45,7 @@ class App extends Component {
         });
 
         this.props.socket.on('updatedCount', (count) => {
-            this.setState({counter: count});
+            this.setState({counter: count, playing: true});
         });
     }
 
@@ -50,10 +56,8 @@ class App extends Component {
                     <div className="col-sm-12">
                         <BababaButton 
                             incrementCounter={this.incrementCounter}
+                            audioPlay={this.audioPlay}
                             buttonDisabled={this.state.buttonDisabled || this.state.mute}
-                            audioOnStart={this.audioOnStart}
-                            audioOnEnd={this.audioOnEnd}
-                            mute={this.state.mute}
                         />
                     </div>
                 </div>
@@ -67,6 +71,14 @@ class App extends Component {
                         <MuteButton onClick={this.muteOnClick} muteStatus={this.state.mute}/>
                     </div>
                 </div>
+                <ReactHowler 
+                    src="/airhorn.mp3" 
+                    html5={true} 
+                    playing={this.state.playing} 
+                    onPlay={this.audioOnStart} 
+                    onEnd={this.audioOnEnd}
+                    mute={this.state.mute}
+                />
             </div>
         )
     }
