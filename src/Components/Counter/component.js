@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './styles.js';
 
-class BababaCounter extends Component {
+class Counter extends Component {
     constructor(props) {
         super(props);
         this.state = {}
@@ -13,4 +13,4 @@ class BababaCounter extends Component {
     }
 }
 
-export default BababaCounter;
+export default Counter;

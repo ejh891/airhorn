@@ -5,17 +5,17 @@
   "dependencies": {
     "axios": "^0.16.1",
     "body-parser": "^1.17.2",
+    "classnames": "^2.2.5",
     "express": "^4.15.3",
     "mongoose": "^4.10.4",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-howler": "^3.6.2",
+    "react-scripts": "1.0.7",
     "socket.io": "^2.0.2",
-    "socket.io-react": "^1.1.2",
-    "react-scripts": "1.0.7"
+    "socket.io-react": "^1.1.2"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "scripts": {
     "postinstall": "react-scripts build",
     "start": "node server.js",

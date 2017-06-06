@@ -4,13 +4,14 @@ import axios from 'axios';
 import { socketConnect } from 'socket.io-react';
 
 import BababaButton from '../BababaButton/component';
-import BababaCounter from '../BababaCounter/component';
-import BababaLogo from '../BababaLogo/component';
+import Counter from '../Counter/component';
+import MuteButton from '../MuteButton/component';
 
 class App extends Component {
     state = {
         counter: 0,
-        buttonDisabled: false
+        buttonDisabled: false,
+        mute: true
     };
     
     incrementCounter = () => {
@@ -25,6 +26,12 @@ class App extends Component {
         this.setState({buttonDisabled: false});
     }
 
+    muteOnClick = () => {
+        this.setState( (prevState) => {
+            return {mute: !prevState.mute}
+        });
+    };
+
     componentDidMount() {
         axios.get("/api/readCounter")
         .then((res) => {
@@ -38,25 +45,26 @@ class App extends Component {
 
     render() {
         return(
-            <div className="container">
+            <div className="container" style={{"margin-top": "10px"}}>
                 <div className="row">
                     <div className="col-sm-12">
                         <BababaButton 
                             incrementCounter={this.incrementCounter}
-                            buttonDisabled={this.state.buttonDisabled}
+                            buttonDisabled={this.state.buttonDisabled || this.state.mute}
                             audioOnStart={this.audioOnStart}
                             audioOnEnd={this.audioOnEnd}
+                            mute={this.state.mute}
                         />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-sm-12">
-                        <BababaCounter count={this.state.counter}/>
+                        <Counter count={this.state.counter}/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-sm-12">
-                        <BababaLogo />
+                        <MuteButton onClick={this.muteOnClick} muteStatus={this.state.mute}/>
                     </div>
                 </div>
             </div>
