@@ -22,16 +22,16 @@ app.use((req, res, next) => {
  next();
 });
 
-app.post('/api/incrementCounter', (req, res) => {
-  AirhornDb.incrementCounter((err, count) => {
-        if (err) {
-          console.log(err);
-          res.sendStatus(500);
-        } 
-        else {
-            socketServer.emit('updatedCount', count);
-            res.sendStatus(200);
-        }
+socketServer.on('connection', function(socket){
+    socket.on('incrementCounter', function () {
+        AirhornDb.incrementCounter((err, count) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                socket.broadcast.emit('updatedCount', count);
+            }
+        });
     });
 });
 

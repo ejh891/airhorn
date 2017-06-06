@@ -17,7 +17,10 @@ class App extends Component {
     };
     
     incrementCounter = () => {
-        axios.post("/api/incrementCounter")
+        this.props.socket.emit('incrementCounter');
+        this.setState((prevState) => {
+            return {counter: prevState.counter + 1};
+        });
     }
 
     audioPlay = () => {
