@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { socketConnect } from 'socket.io-react';
 
+import { Grid, Row, Col } from 'react-bootstrap';
 import BababaButton from '../BababaButton/component';
 import Counter from '../Counter/component';
 import MuteButton from '../MuteButton/component';
 import ReactHowler from 'react-howler';
+import SyncSwitch from '../SyncSwitch/component';
 
 class App extends Component {
     state = {
@@ -54,26 +56,31 @@ class App extends Component {
 
     render() {
         return(
-            <div className="container" style={{"margin-top": "10px"}}>
-                <div className="row">
-                    <div className="col-sm-12">
+            <Grid>
+                <Row>
+                    <Col xs={12}>
+                        <SyncSwitch />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
                         <BababaButton 
                             incrementCounter={this.incrementCounter}
                             audioPlay={this.audioPlay}
                             buttonDisabled={this.state.buttonDisabled || this.state.mute}
                         />
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-sm-12">
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
                         <Counter count={this.state.counter}/>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-sm-12">
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
                         <MuteButton onClick={this.muteOnClick} muteStatus={this.state.mute}/>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
                 <ReactHowler 
                     src="/airhorn.mp3" 
                     html5={true} 
@@ -82,7 +89,7 @@ class App extends Component {
                     onEnd={this.audioOnEnd}
                     mute={this.state.mute}
                 />
-            </div>
+            </Grid>
         )
     }
 }
