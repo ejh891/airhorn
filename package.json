@@ -13,9 +13,13 @@
     "react-howler": "^3.6.2",
     "react-scripts": "1.0.7",
     "socket.io": "^2.0.2",
+    "socket.io-client": "^2.0.2",
     "socket.io-react": "^1.1.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-react-app": "^1.0.4"
+  },
   "scripts": {
     "postinstall": "react-scripts build",
     "start": "node server.js",
