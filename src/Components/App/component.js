@@ -15,13 +15,20 @@ class App extends Component {
         counter: 0,
         buttonDisabled: false,
         playing: false,
-        mute: true
+        mute: true,
+        synced: false
     };
     
     incrementCounter = () => {
         this.props.socket.emit('incrementCounter');
         this.setState((prevState) => {
             return {counter: prevState.counter + 1};
+        });
+    }
+
+    switchOnChange = () => {
+        this.setState((prevState) => {
+            return {synced: !prevState.synced}
         });
     }
 
@@ -50,7 +57,9 @@ class App extends Component {
         });
 
         this.props.socket.on('updatedCount', (count) => {
-            this.setState({counter: count, playing: true});
+            this.setState((prevState) => {
+                return {counter: count, playing: prevState.synced}
+            });
         });
     }
 
@@ -59,7 +68,7 @@ class App extends Component {
             <Grid>
                 <Row>
                     <Col xs={12}>
-                        <SyncSwitch />
+                        <SyncSwitch state={this.state.synced} onChange={this.switchOnChange}/>
                     </Col>
                 </Row>
                 <Row>
