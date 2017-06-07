@@ -9,6 +9,7 @@ import Counter from '../Counter/component';
 import MuteButton from '../MuteButton/component';
 import ReactHowler from 'react-howler';
 import SyncSwitch from '../SyncSwitch/component';
+import ReasonTextbox from '../ReasonTextbox/component';
 
 class App extends Component {
     state = {
@@ -62,7 +63,7 @@ class App extends Component {
             });
         });
     }
-
+    
     render() {
         return(
             <Grid>
@@ -71,6 +72,11 @@ class App extends Component {
                         <SyncSwitch state={this.state.synced} onChange={this.switchOnChange}/>
                     </Col>
                 </Row>
+                <Row className={this.state.synced ? "" : "hidden"}>
+                    <Col xs={12}>
+                        <ReasonTextbox />
+                    </Col>
+                </Row>       
                 <Row>
                     <Col xs={12}>
                         <BababaButton 
