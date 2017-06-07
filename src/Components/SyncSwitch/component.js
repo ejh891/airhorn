@@ -5,7 +5,7 @@ const SyncSwitch = (props) => {
     return (
         <div>
             <Switch defaultValue={false} onChange={props.onChange}/>
-            <span style={{marginLeft: "5px"}}>Bababa Together?</span>
+            <span style={{marginLeft: "5px"}}>Bababa together?</span>
         </div>
     )
 }
