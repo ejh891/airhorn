@@ -4,7 +4,7 @@ import Switch from 'react-bootstrap-switch';
 const SyncSwitch = (props) => {
     return (
         <div>
-            <Switch defaultValue={false} onChange={props.switchOnChange}/>
+            <Switch defaultValue={false} onChange={props.onChange}/>
             <span style={{marginLeft: "5px"}}>Bababa Together?</span>
         </div>
     )
