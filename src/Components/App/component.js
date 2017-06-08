@@ -98,7 +98,7 @@ class App extends Component {
     render() {
         return(
             <Grid>
-                <Row>
+                <Row style={{marginBottom: "40px"}}>
                     <Col xs={12}>
                         <div>
                             <span className={"pull-left"}>
@@ -114,7 +114,7 @@ class App extends Component {
 
                     </Col>
                 </Row>
-                <Row className={this.state.synced ? "" : "hidden"}>
+                <Row style={{marginBottom: "20px"}} className={this.state.synced ? "" : "hidden"}>
                     <Col xs={12}>
                         <ReasonTextbox 
                             value={this.state.reason} 
@@ -122,7 +122,7 @@ class App extends Component {
                         />
                     </Col>
                 </Row>       
-                <Row>
+                <Row style={{marginBottom: "40px"}}>
                     <Col xs={12}>
                         <BababaButton 
                             onClick={this.buttonOnClick}
@@ -130,7 +130,7 @@ class App extends Component {
                         />
                     </Col>
                 </Row>
-                <Row>
+                <Row style={{marginBottom: "40px"}}>
                     <Col xs={12}>
                         <Counter count={this.state.counter}/>
                     </Col>
