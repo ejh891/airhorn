@@ -6,7 +6,13 @@ var app = express();
 var httpServer = require('http').Server(app);
 var socketServer = require('socket.io')(httpServer);
 
-var port = process.env.PORT || 3001;
+var port;
+if (process.env.NODE_ENV === "production") {
+    port = process.env.PORT;
+}
+else {
+    port = 3001;
+}
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
