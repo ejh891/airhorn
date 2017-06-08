@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 
 socketServer.on('connection', function(socket){
     socket.on('incrementCounter', function (eventData) {
-        AirhornDb.incrementCounter(((err, count) => {
+        AirhornDb.incrementCounter((err, count) => {
             if (err) {
                 console.log(err);
             }
@@ -42,7 +42,12 @@ socketServer.on('connection', function(socket){
                 data.message = eventData.message ? eventData.message : null;
                 socketServer.emit('updatedCount', data);
             }
-        }));
+        });
+        AirhornDb.writeMessageToFeed(eventData.message, (err) => {
+            if (err) {
+                console.log(err);
+            }
+        });
     });
 });
 
@@ -50,6 +55,14 @@ app.get('/api/readCounter', (req, res) => {
   var data = {};
   AirhornDb.readCounter((count) => {
         data.count = count;
+        res.json(data);
+    });
+});
+
+app.get('/api/readFeed', (req, res) => {
+    var data = {};
+    AirhornDb.readFeed((messages) => {
+        data.messages = messages;
         res.json(data);
     });
 });

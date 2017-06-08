@@ -80,6 +80,11 @@ class App extends Component {
             this.setState({counter: res.data.count});
         });
 
+        axios.get(this.props.apiServerRoot + "/api/readFeed")
+        .then( (res) => {
+            this.setState({messages: res.data.messages});
+        });
+
         this.props.socket.on('updatedCount', (data) => {
             this.setState((prevState) => {
                 let newState = {};
@@ -88,7 +93,7 @@ class App extends Component {
                     newState.playing = true
                 }
                 if (data.message) {
-                    newState.messages = [data.message].concat(prevState.messages)
+                    newState.messages = [{message: data.message, createdUts: Math.floor(Date.now() / 1000)}].concat(prevState.messages)
                 }
                 return newState;
             });
