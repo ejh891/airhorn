@@ -88,7 +88,7 @@ class App extends Component {
                     newState.playing = true
                 }
                 if (data.message) {
-                    newState.messages = prevState.messages.concat([data.message])
+                    newState.messages = [data.message].concat(prevState.messages)
                 }
                 return newState;
             });
@@ -137,6 +137,7 @@ class App extends Component {
                 </Row>
                 <Row className={this.state.synced ? "" : "hidden"}>
                     <Col xs={12}>
+                        <h2>Bababa Feed</h2>
                         <ReasonList messages={this.state.messages}/>
                     </Col>
                 </Row>
