@@ -1,12 +1,7 @@
 let styles = {};
 
-styles.muteButtonContainer = {
-    "text-align": "center",
-    "margin-top": "30px"
-};
-
 styles.muteButton = {
-    "font-size": "300%"
+    "font-size": "200%"
 };
 
 styles.muteIcon = {

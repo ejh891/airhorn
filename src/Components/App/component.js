@@ -4,13 +4,14 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { socketConnect } from 'socket.io-react';
 
-import { Grid, Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import BababaButton from '../BababaButton/component';
 import Counter from '../Counter/component';
 import MuteButton from '../MuteButton/component';
 import ReactHowler from 'react-howler';
 import SyncSwitch from '../SyncSwitch/component';
 import ReasonTextbox from '../ReasonTextbox/component';
+import ReasonList from '../ReasonList/component';
 
 class App extends Component {
     state = {
@@ -99,10 +100,18 @@ class App extends Component {
             <Grid>
                 <Row>
                     <Col xs={12}>
-                        <SyncSwitch 
-                            state={this.state.synced}
-                            onChange={this.switchOnChange}
-                        />
+                        <div>
+                            <span className={"pull-left"}>
+                                <SyncSwitch 
+                                    state={this.state.synced}
+                                    onChange={this.switchOnChange}
+                                />
+                            </span>
+                            <span className={"pull-right"}>
+                                <MuteButton onClick={this.muteOnClick} muteStatus={this.state.mute}/>
+                            </span>
+                        </div>
+
                     </Col>
                 </Row>
                 <Row className={this.state.synced ? "" : "hidden"}>
@@ -128,14 +137,7 @@ class App extends Component {
                 </Row>
                 <Row>
                     <Col xs={12}>
-                        <MuteButton onClick={this.muteOnClick} muteStatus={this.state.mute}/>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                          <ListGroup>
-                              {this.state.messages.map( (message) => <ListGroupItem>{message}</ListGroupItem>)}
-                        </ListGroup>
+                        <ReasonList messages={this.state.messages}/>
                     </Col>
                 </Row>
                 <ReactHowler 

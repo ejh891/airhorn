@@ -11,11 +11,9 @@ const MuteButton = (props) => {
     };
 
     return (
-        <div style={styles.muteButtonContainer}>
-            <button style={styles.muteButton} className="btn btn-lg btn-default" onClick={props.onClick}>
-                <span style={styles.muteIcon} className={classnames(buttonClasses)}></span>
-            </button>
-        </div>
+        <button style={styles.muteButton} className="btn btn-lg btn-default" onClick={props.onClick}>
+            <span style={styles.muteIcon} className={classnames(buttonClasses)}></span>
+        </button>
     )
 }
 
