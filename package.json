@@ -23,6 +23,7 @@
     "eslint-config-react-app": "^1.0.4"
   },
   "scripts": {
+    "postinstall": "react-scripts build",
     "start": "node server.js",
     "start-app-dev": "react-scripts start",
     "build": "react-scripts build",
