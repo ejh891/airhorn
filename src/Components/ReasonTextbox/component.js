@@ -6,7 +6,7 @@ const ReasonTextbox = (props) => {
         <FormGroup bsSize={"lg"}>
             <FormControl
                 style={{marginTop: "20px"}}
-                value={props.reason}
+                value={props.value}
                 onChange={props.onChange}
                 type="text"
                 placeholder="Tell the world why you're bababa'ing"
