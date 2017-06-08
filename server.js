@@ -25,15 +25,18 @@ app.use((req, res, next) => {
 });
 
 socketServer.on('connection', function(socket){
-    socket.on('incrementCounter', function () {
-        AirhornDb.incrementCounter((err, count) => {
+    socket.on('incrementCounter', function (eventData) {
+        AirhornDb.incrementCounter(((err, count) => {
             if (err) {
                 console.log(err);
             }
             else {
-                socket.broadcast.emit('updatedCount', count);
+                var data = {};
+                data.count = count;
+                data.message = eventData.message ? eventData.message : null;
+                socketServer.emit('updatedCount', data);
             }
-        });
+        }));
     });
 });
 

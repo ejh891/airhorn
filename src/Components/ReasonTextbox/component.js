@@ -1,13 +1,18 @@
 import React from 'react';
-import {FormControl} from 'react-bootstrap';
+import {FormGroup, FormControl} from 'react-bootstrap';
 
 const ReasonTextbox = (props) => {
     return (
-        <FormControl
-            style={{marginTop: "20px"}}
-            type="text"
-            placeholder="Tell the world why you're bababa'ing"
-        />
+        <FormGroup bsSize={"lg"}>
+            <FormControl
+                style={{marginTop: "20px"}}
+                value={props.reason}
+                onChange={props.onChange}
+                type="text"
+                placeholder="Tell the world why you're bababa'ing"
+            />
+        </FormGroup>
+        
     )
 }
 

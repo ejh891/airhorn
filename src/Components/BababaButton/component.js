@@ -12,7 +12,7 @@ const BababaButton = (props) => {
                     type="button" 
                     value="Bababa!" 
                     disabled={props.buttonDisabled}
-                    onClick={() => {props.audioPlay(); props.incrementCounter();}}
+                    onClick={props.onClick}
                 />
             </div>
         </div>
