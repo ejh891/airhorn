@@ -135,7 +135,7 @@ class App extends Component {
                         <Counter count={this.state.counter}/>
                     </Col>
                 </Row>
-                <Row>
+                <Row className={this.state.synced ? "" : "hidden"}>
                     <Col xs={12}>
                         <ReasonList messages={this.state.messages}/>
                     </Col>
