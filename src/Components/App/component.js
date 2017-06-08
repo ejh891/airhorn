@@ -74,7 +74,7 @@ class App extends Component {
 
 // lifecycle methods
     componentDidMount() {
-        axios.get("/api/readCounter")
+        axios.get(this.props.apiServerRoot + "/api/readCounter")
         .then((res) => {
             this.setState({counter: res.data.count});
         });

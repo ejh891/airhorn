@@ -5,12 +5,12 @@ import io from 'socket.io-client';
 import App from '../App/component';
 
 class AppContainer extends Component {
-    socket = io.connect();
+    socket = io.connect(this.props.apiServerRoot);
 
     render() {
         return(
             <SocketProvider socket={this.socket}>
-                <App />
+                <App apiServerRoot={this.props.apiServerRoot}/>
             </SocketProvider>
         )
     }

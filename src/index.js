@@ -6,5 +6,5 @@ import './css/index.css';
 import './css/bootstrap-switch-15.0.3.min.css';
 import './css/bootstrap-3.3.7.min.css';
 
-ReactDOM.render(<AppContainer />, document.getElementById('root'));
+ReactDOM.render(<AppContainer apiServerRoot={"http://localhost:" + (process.env.PORT || 3001)}/>, document.getElementById('root'));
 registerServiceWorker();
