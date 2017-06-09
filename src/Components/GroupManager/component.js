@@ -52,8 +52,10 @@ class GroupManager extends Component {
         return (
             <div>
                 <h1>{this.props.groupName}</h1>
-                <a style={{cursor: "pointer"}} onClick={this.toggleJoinVisibility}>{this.state.joinToggleText}</a>
-                <a style={{cursor: "pointer", marginLeft: "10px"}} onClick={this.leaveGroup} className={this.props.groupName ? "" : "hidden"}>Leave</a>
+                <div style={{marginBottom: "10px"}}>
+                    <a style={{cursor: "pointer"}} onClick={this.toggleJoinVisibility}>{this.state.joinToggleText}</a>
+                    <a style={{cursor: "pointer", marginLeft: "10px"}} onClick={this.leaveGroup} className={this.props.groupName ? "" : "hidden"}>Leave</a>
+                </div>
                 <div className={this.state.joinVisible ? "" : "hidden"} >
                     <JoinGroup 
                         textboxOnChange={this.joinTextboxOnChange}
