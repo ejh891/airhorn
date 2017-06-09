@@ -6,7 +6,6 @@ import { socketConnect } from 'socket.io-react';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 import BababaButton from '../BababaButton/component';
-import MuteButton from '../MuteButton/component';
 import ReactHowler from 'react-howler';
 import ReasonTextbox from '../ReasonTextbox/component';
 import BababaFeed from '../BababaFeed/component';
@@ -15,7 +14,6 @@ import GroupManager from '../GroupManager/component';
 class App extends Component {
     state = {
         playing: false,
-        mute: true,
         reason: "",
         messages: []
     };
@@ -47,7 +45,7 @@ class App extends Component {
             });
         });
     }
-    
+
     componentWillUpdate(nextProps, nextState) {
         if (nextProps.group !== this.props.group) {
             this.readFeed(nextProps.group);
@@ -89,26 +87,12 @@ class App extends Component {
         this.stopAudio();
     }
 
-// mute events
-    muteOnClick = () => {
-        this.setState( (prevState) => {
-            return {mute: !prevState.mute}
-        });
-    };
-    
     render() {
         return(
             <Grid>
-                <Row>
-                    <Col xs={12}>
-                        <GroupManager groupName={this.props.group} onGroupChange={this.props.onGroupChange}/>
-                    </Col>
-                </Row>
                 <Row style={{marginBottom: "40px"}}>
                     <Col xs={12}>
-                        <div className={"pull-right"}>
-                                <MuteButton onClick={this.muteOnClick} muteStatus={this.state.mute}/>
-                        </div>
+                        <GroupManager groupName={this.props.group} onGroupChange={this.props.onGroupChange}/>
                     </Col>
                 </Row>
                 <Row style={{marginBottom: "20px"}} className={this.props.group ? "" : "hidden"}>
@@ -123,13 +107,13 @@ class App extends Component {
                     <Col xs={12}>
                         <BababaButton 
                             onClick={this.buttonOnClick}
-                            buttonDisabled={this.state.playing || this.state.mute}
+                            buttonDisabled={this.state.playing}
                         />
                     </Col>
                 </Row>
                 <Row className={this.props.group ? "" : "hidden"}>
                     <Col xs={12}>
-                        <h2>Bababa Feed</h2>
+                        <h2>{this.props.group + " Bababas"}</h2>
                         <BababaFeed messages={this.state.messages}/>
                     </Col>
                 </Row>
@@ -139,7 +123,6 @@ class App extends Component {
                     playing={this.state.playing} 
                     onPlay={this.audioOnStart} 
                     onEnd={this.audioOnEnd}
-                    mute={this.state.mute}
                 />
             </Grid>
         )
