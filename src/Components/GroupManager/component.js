@@ -36,6 +36,13 @@ class GroupManager extends Component {
         this.setState({groupToJoin: e.target.value});
     }
 
+    joinTextboxOnKeyPress = (e) => {
+        const ENTER_KEY = 13;
+        if(e.charCode===ENTER_KEY){
+            this.joinButtonOnClick();
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         let joinToggleText;
         if (nextProps.groupName) {
@@ -59,6 +66,7 @@ class GroupManager extends Component {
                 <div className={this.state.joinVisible ? "" : "hidden"} >
                     <JoinGroup 
                         textboxOnChange={this.joinTextboxOnChange}
+                        textboxOnKeyPress={this.joinTextboxOnKeyPress}
                         buttonOnClick={this.joinButtonOnClick}
                         textboxValue={this.state.groupToJoin}
                     />
