@@ -20,30 +20,38 @@ class App extends Component {
         messages: []
     };
 
+    readFeed = (group) => {
+        axios.get(this.props.apiServerRoot + "/api/readFeed/" + encodeURIComponent(group))
+        .then( (res) => {
+            this.setState({messages: res.data.messages});
+        });
+    }
+
+    subscribe = (group) => {
+        this.props.socket.on('bababa-' + group, (data) => {
+            this.setState((prevState) => {
+                let newState = {};
+                
+                newState.playing = true
+                
+                if (data.message) {
+                    newState.messages = [
+                        {
+                            message: data.message,
+                            group: group,
+                            createdUts: Math.floor(Date.now() / 1000)
+                        }
+                    ].concat(prevState.messages)
+                }
+                return newState;
+            });
+        });
+    }
+    
     componentWillUpdate(nextProps, nextState) {
         if (nextProps.group !== this.props.group) {
-            axios.get(nextProps.apiServerRoot + "/api/readFeed/" + encodeURIComponent(nextProps.group))
-            .then( (res) => {
-                this.setState({messages: res.data.messages});
-            });
-            nextProps.socket.on('bababa-' + nextProps.group, (data) => {
-                this.setState((prevState) => {
-                    let newState = {};
-                    
-                    newState.playing = true
-                    
-                    if (data.message) {
-                        newState.messages = [
-                            {
-                                message: data.message,
-                                group: nextProps.group,
-                                createdUts: Math.floor(Date.now() / 1000)
-                            }
-                        ].concat(prevState.messages)
-                    }
-                    return newState;
-                });
-            });
+            this.readFeed(nextProps.group);
+            this.subscribe(nextProps.group);
         }
     }
 
