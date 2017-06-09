@@ -17,12 +17,11 @@ class App extends Component {
         playing: false,
         mute: true,
         reason: "",
-        messages: [],
-        groupToJoin: ""
+        messages: []
     };
 
     componentWillUpdate(nextProps, nextState) {
-        if (nextProps.group) {
+        if (nextProps.group !== this.props.group) {
             axios.get(nextProps.apiServerRoot + "/api/readFeed/" + encodeURIComponent(nextProps.group))
             .then( (res) => {
                 this.setState({messages: res.data.messages});
