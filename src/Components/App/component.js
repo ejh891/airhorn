@@ -1,7 +1,6 @@
 /*eslint-disable no-console */
 import React, { Component } from 'react';
 
-import axios from 'axios';
 import { socketConnect } from 'socket.io-react';
 
 import { Grid, Row, Col } from 'react-bootstrap';
@@ -13,60 +12,13 @@ import GroupManager from '../GroupManager/component';
 
 class App extends Component {
     state = {
-        playing: false,
-        reason: "",
-        messages: []
+        playing: this.props.playing,
+        reason: ""
     };
-
-    readFeed = (group) => {
-        axios.get(this.props.apiServerRoot + "/api/readFeed/" + encodeURIComponent(group))
-        .then( (res) => {
-            this.setState({messages: res.data.messages});
-        });
-    }
-
-    subscribe = (group) => {
-        this.props.socket.on('bababa-' + group, (data) => {
-            this.setState((prevState) => {
-                let newState = {};
-                
-                newState.playing = true
-                
-                if (data.message) {
-                    newState.messages = [
-                        {
-                            message: data.message,
-                            group: group,
-                            createdUts: Math.floor(Date.now() / 1000)
-                        }
-                    ].concat(prevState.messages)
-                }
-                return newState;
-            });
-        });
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.group !== this.props.group) {
-            if (nextProps.group) {
-                this.readFeed(nextProps.group);
-                this.subscribe(nextProps.group);
-            }
-        }
-    }
-
-// shared methods
-    playAudio = () => {
-        this.setState({playing: true});
-    }
-    
-    stopAudio = () => {
-        this.setState({playing: false});
-    }
 
 // button events
     buttonOnClick = () => {
-        this.playAudio();
+        this.props.playAudio();
         
         let data = {};
         if (this.props.group && this.state.reason.length > 0) {
@@ -86,7 +38,7 @@ class App extends Component {
 
 // audio events
     audioOnEnd = () => {
-        this.stopAudio();
+        this.props.stopAudio();
     }
 
     render() {
@@ -109,20 +61,20 @@ class App extends Component {
                     <Col xs={12}>
                         <BababaButton 
                             onClick={this.buttonOnClick}
-                            buttonDisabled={this.state.playing}
+                            buttonDisabled={this.props.playing}
                         />
                     </Col>
                 </Row>
                 <Row className={this.props.group ? "" : "hidden"}>
                     <Col xs={12}>
                         <h2>{this.props.group + " Bababas"}</h2>
-                        <BababaFeed messages={this.state.messages}/>
+                        <BababaFeed messages={this.props.messages}/>
                     </Col>
                 </Row>
                 <ReactHowler 
                     src="/airhorn.mp3" 
                     html5={true} 
-                    playing={this.state.playing} 
+                    playing={this.props.playing} 
                     onPlay={this.audioOnStart} 
                     onEnd={this.audioOnEnd}
                 />
