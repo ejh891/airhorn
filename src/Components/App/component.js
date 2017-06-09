@@ -46,10 +46,12 @@ class App extends Component {
         });
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.group !== this.props.group) {
-            this.readFeed(nextProps.group);
-            this.subscribe(nextProps.group);
+            if (nextProps.group) {
+                this.readFeed(nextProps.group);
+                this.subscribe(nextProps.group);
+            }
         }
     }
 
