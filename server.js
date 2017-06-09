@@ -31,40 +31,29 @@ app.use((req, res, next) => {
 });
 
 socketServer.on('connection', function(socket){
-    socket.on('incrementCounter', function (eventData) {
-        AirhornDb.incrementCounter((err, count) => {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                var data = {};
-                data.count = count;
-                data.message = eventData.message ? eventData.message : null;
-                socketServer.emit('updatedCount', data);
-            }
-        });
-        AirhornDb.writeMessageToFeed(eventData.message, (err) => {
+    socket.on('bababa', function (eventData) {
+        let message = {
+            message: eventData.message,
+            group: eventData.group
+        };
+        AirhornDb.writeMessageToFeed(message, (err) => {
             if (err) {
                 console.log(err);
             }
         });
+
+        socketServer.emit('bababa-' + eventData.group, message);
     });
 });
 
-app.get('/api/readCounter', (req, res) => {
-  var data = {};
-  AirhornDb.readCounter((count) => {
-        data.count = count;
-        res.json(data);
-    });
-});
-
-app.get('/api/readFeed', (req, res) => {
-    var data = {};
-    AirhornDb.readFeed((messages) => {
-        data.messages = messages;
-        res.json(data);
-    });
+app.get('/api/readFeed/:group', (req, res) => {
+    if (req.params.group) {        
+        AirhornDb.readFeed(req.params.group, (messages) => {
+            let data = {};
+            data.messages = messages;
+            res.json(data);
+        });
+    }
 });
 
 httpServer.listen(port, () => {

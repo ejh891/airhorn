@@ -9,7 +9,7 @@ const ReasonTextbox = (props) => {
                 value={props.value}
                 onChange={props.onChange}
                 type="text"
-                placeholder="Tell the world why you're bababa'ing"
+                placeholder="Tell the group why you're bababa'ing"
             />
         </FormGroup>
         

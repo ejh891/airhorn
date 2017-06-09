@@ -6,35 +6,20 @@ import { socketConnect } from 'socket.io-react';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 import BababaButton from '../BababaButton/component';
-import Counter from '../Counter/component';
 import MuteButton from '../MuteButton/component';
 import ReactHowler from 'react-howler';
-import SyncSwitch from '../SyncSwitch/component';
 import ReasonTextbox from '../ReasonTextbox/component';
-import ReasonList from '../ReasonList/component';
+import BababaFeed from '../BababaFeed/component';
 
 class App extends Component {
     state = {
-        counter: 0,
         playing: false,
         mute: true,
-        synced: false,
         reason: "",
         messages: []
     };
 
 // shared methods
-    incrementCounter = () => {
-        let data = {};
-        if (this.state.synced && this.state.reason.length > 0) {
-            data.message = this.state.reason;
-        }
-        this.props.socket.emit('incrementCounter', data);
-        this.setState((prevState) => {
-            return {counter: prevState.counter + 1};
-        });
-    }
-
     playAudio = () => {
         this.setState({playing: true});
     }
@@ -46,7 +31,15 @@ class App extends Component {
 // button events
     buttonOnClick = () => {
         this.playAudio();
-        this.incrementCounter();
+        
+        let data = {};
+        if (this.state.group && this.state.reason.length > 0) {
+            data.message = this.state.reason;
+            data.group = this.state.group;
+        }
+
+        this.props.socket.emit('bababa', data);
+
         this.setState({reason: ""})
     }
 // switch events
@@ -75,51 +68,48 @@ class App extends Component {
 
 // lifecycle methods
     componentDidMount() {
-        axios.get(this.props.apiServerRoot + "/api/readCounter")
-        .then((res) => {
-            this.setState({counter: res.data.count});
-        });
+        let group = window.location.pathname.split('/')[1];
 
-        axios.get(this.props.apiServerRoot + "/api/readFeed")
-        .then( (res) => {
-            this.setState({messages: res.data.messages});
-        });
-
-        this.props.socket.on('updatedCount', (data) => {
-            this.setState((prevState) => {
-                let newState = {};
-                newState.counter = data.count;
-                if (prevState.synced) {
-                    newState.playing = true
-                }
-                if (data.message) {
-                    newState.messages = [{message: data.message, createdUts: Math.floor(Date.now() / 1000)}].concat(prevState.messages)
-                }
-                return newState;
+        if (group) {
+            axios.get(this.props.apiServerRoot + "/api/readFeed/" + encodeURIComponent(group))
+            .then( (res) => {
+                this.setState({messages: res.data.messages});
             });
-        });
+            this.props.socket.on('bababa-' + group, (data) => {
+                this.setState((prevState) => {
+                    let newState = {};
+                    
+                    newState.playing = true
+                    
+                    if (data.message) {
+                        newState.messages = [
+                            {
+                                message: data.message,
+                                group: this.state.group,
+                                createdUts: Math.floor(Date.now() / 1000)
+                            }
+                        ].concat(prevState.messages)
+                    }
+                    return newState;
+                });
+            });
+
+            this.setState({group: group});
+        }
     }
     
     render() {
         return(
             <Grid>
+                <h1>{this.state.group}</h1>
                 <Row style={{marginBottom: "40px"}}>
                     <Col xs={12}>
-                        <div>
-                            <span className={"pull-left"}>
-                                <SyncSwitch 
-                                    state={this.state.synced}
-                                    onChange={this.switchOnChange}
-                                />
-                            </span>
-                            <span className={"pull-right"}>
+                        <div className={"pull-right"}>
                                 <MuteButton onClick={this.muteOnClick} muteStatus={this.state.mute}/>
-                            </span>
                         </div>
-
                     </Col>
                 </Row>
-                <Row style={{marginBottom: "20px"}} className={this.state.synced ? "" : "hidden"}>
+                <Row style={{marginBottom: "20px"}} className={this.state.group ? "" : "hidden"}>
                     <Col xs={12}>
                         <ReasonTextbox 
                             value={this.state.reason} 
@@ -135,15 +125,10 @@ class App extends Component {
                         />
                     </Col>
                 </Row>
-                <Row style={{marginBottom: "40px"}}>
-                    <Col xs={12}>
-                        <Counter count={this.state.counter}/>
-                    </Col>
-                </Row>
-                <Row className={this.state.synced ? "" : "hidden"}>
+                <Row className={this.state.group ? "" : "hidden"}>
                     <Col xs={12}>
                         <h2>Bababa Feed</h2>
-                        <ReasonList messages={this.state.messages}/>
+                        <BababaFeed messages={this.state.messages}/>
                     </Col>
                 </Row>
                 <ReactHowler 

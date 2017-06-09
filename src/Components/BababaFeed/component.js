@@ -1,12 +1,12 @@
 import React from 'react';
 import {ListGroup, ListGroupItem } from 'react-bootstrap';
 
-const ReasonList = (props) => {
+const BababaFeed = (props) => {
     return (
         <ListGroup style={{marginTop: "20px"}}>
-                {props.messages.map( (message) => <ListGroupItem>{message.message}</ListGroupItem>)}
+                {props.messages.map( (message, i) => <ListGroupItem key={i}>{message.message}</ListGroupItem>)}
         </ListGroup>
     )
 }
 
-export default ReasonList;
+export default BababaFeed;
