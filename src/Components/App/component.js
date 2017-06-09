@@ -20,15 +20,13 @@ class App extends Component {
     buttonOnClick = () => {
         this.props.playAudio();
         
-        let data = {};
-        if (this.props.group && this.state.reason.length > 0) {
+        if (this.props.group) {
+            let data = {};
             data.message = this.state.reason;
             data.group = this.props.group;
+            this.props.socket.emit('bababa', data);
+            this.setState({reason: ""})
         }
-
-        this.props.socket.emit('bababa', data);
-
-        this.setState({reason: ""})
     }
 
 // reason textbox events

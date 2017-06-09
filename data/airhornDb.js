@@ -1,3 +1,5 @@
+/*eslint-disable no-console */
+
 var mongoose = require('mongoose');
 
 var dbUser = process.env.DBUSER;
@@ -5,7 +7,7 @@ var dbPass = process.env.DBPASS;
 mongoose.connect('mongodb://' + dbUser + ':' + dbPass + '@ds153521.mlab.com:53521/baabababababaa');
 
 var airhornFeedSchema = mongoose.Schema({
-    message : { type: mongoose.Schema.Types.String, required: true},
+    message : { type: mongoose.Schema.Types.String, required: false},
     group : { type: mongoose.Schema.Types.String, required: true},
     createdUts : { type: mongoose.Schema.Types.Number, required: true, default: Math.floor(Date.now() / 1000) }
 });
@@ -24,7 +26,7 @@ AirhornDb.airhornMessage = mongoose.model('airhornMessage', airhornFeedSchema, '
 const FEED_LIMIT = 10;
 AirhornDb.readFeed = (group, callback) => {
     AirhornDb.airhornMessage
-        .find({group: group})
+        .find({group: group, message: {"$ne": ""}})
         .sort("-createdUts")
         .limit(FEED_LIMIT)
         .exec( (err, results) => {
@@ -50,10 +52,8 @@ AirhornDb.writeMessageToFeed = (data, callback) => {
         group: data.group
     });
 
-    AirhornDb.readFeed( data.group, (feed) => {
-        newMessage.save((err, savedResult) => {
-            callback(err);
-        });
+    newMessage.save((err, savedResult) => {
+        callback(err);
     });
 }
 

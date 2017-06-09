@@ -34,7 +34,8 @@ socketServer.on('connection', function(socket){
     socket.on('bababa', function (eventData) {
         let message = {
             message: eventData.message,
-            group: eventData.group
+            group: eventData.group,
+            createdUts: Math.floor(Date.now() / 1000)
         };
         AirhornDb.writeMessageToFeed(message, (err) => {
             if (err) {
