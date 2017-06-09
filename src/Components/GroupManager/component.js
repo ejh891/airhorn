@@ -36,6 +36,7 @@ class GroupManager extends Component {
                     <JoinGroup 
                         textboxOnChange={this.joinTextboxOnChange}
                         buttonOnClick={this.joinButtonOnClick}
+                        textboxValue={this.state.groupToJoin}
                     />
                 </div>
             </div>

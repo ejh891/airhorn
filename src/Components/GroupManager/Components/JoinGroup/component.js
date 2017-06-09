@@ -6,7 +6,7 @@ const JoinGroup = (props) => {
         <div>
             <FormGroup>
                 <FormControl
-                    value={props.value}
+                    value={props.textboxValue}
                     onChange={props.textboxOnChange}
                     type="text"
                     placeholder="Start or join a group by picking a name here"
