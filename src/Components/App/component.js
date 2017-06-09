@@ -10,14 +10,43 @@ import MuteButton from '../MuteButton/component';
 import ReactHowler from 'react-howler';
 import ReasonTextbox from '../ReasonTextbox/component';
 import BababaFeed from '../BababaFeed/component';
+import GroupManager from '../GroupManager/component';
 
 class App extends Component {
     state = {
         playing: false,
         mute: true,
         reason: "",
-        messages: []
+        messages: [],
+        groupToJoin: ""
     };
+
+    componentWillUpdate(nextProps, nextState) {
+        if (nextProps.group) {
+            axios.get(nextProps.apiServerRoot + "/api/readFeed/" + encodeURIComponent(nextProps.group))
+            .then( (res) => {
+                this.setState({messages: res.data.messages});
+            });
+            nextProps.socket.on('bababa-' + nextProps.group, (data) => {
+                this.setState((prevState) => {
+                    let newState = {};
+                    
+                    newState.playing = true
+                    
+                    if (data.message) {
+                        newState.messages = [
+                            {
+                                message: data.message,
+                                group: nextProps.group,
+                                createdUts: Math.floor(Date.now() / 1000)
+                            }
+                        ].concat(prevState.messages)
+                    }
+                    return newState;
+                });
+            });
+        }
+    }
 
 // shared methods
     playAudio = () => {
@@ -33,20 +62,14 @@ class App extends Component {
         this.playAudio();
         
         let data = {};
-        if (this.state.group && this.state.reason.length > 0) {
+        if (this.props.group && this.state.reason.length > 0) {
             data.message = this.state.reason;
-            data.group = this.state.group;
+            data.group = this.props.group;
         }
 
         this.props.socket.emit('bababa', data);
 
         this.setState({reason: ""})
-    }
-// switch events
-    switchOnChange = () => {
-        this.setState((prevState) => {
-            return {synced: !prevState.synced}
-        });
     }
 
 // reason textbox events
@@ -65,43 +88,15 @@ class App extends Component {
             return {mute: !prevState.mute}
         });
     };
-
-// lifecycle methods
-    componentDidMount() {
-        let group = window.location.pathname.split('/')[1];
-
-        if (group) {
-            axios.get(this.props.apiServerRoot + "/api/readFeed/" + encodeURIComponent(group))
-            .then( (res) => {
-                this.setState({messages: res.data.messages});
-            });
-            this.props.socket.on('bababa-' + group, (data) => {
-                this.setState((prevState) => {
-                    let newState = {};
-                    
-                    newState.playing = true
-                    
-                    if (data.message) {
-                        newState.messages = [
-                            {
-                                message: data.message,
-                                group: this.state.group,
-                                createdUts: Math.floor(Date.now() / 1000)
-                            }
-                        ].concat(prevState.messages)
-                    }
-                    return newState;
-                });
-            });
-
-            this.setState({group: group});
-        }
-    }
     
     render() {
         return(
             <Grid>
-                <h1>{this.state.group}</h1>
+                <Row>
+                    <Col xs={12}>
+                        <GroupManager groupName={this.props.group} onGroupChange={this.props.onGroupChange}/>
+                    </Col>
+                </Row>
                 <Row style={{marginBottom: "40px"}}>
                     <Col xs={12}>
                         <div className={"pull-right"}>
@@ -109,7 +104,7 @@ class App extends Component {
                         </div>
                     </Col>
                 </Row>
-                <Row style={{marginBottom: "20px"}} className={this.state.group ? "" : "hidden"}>
+                <Row style={{marginBottom: "20px"}} className={this.props.group ? "" : "hidden"}>
                     <Col xs={12}>
                         <ReasonTextbox 
                             value={this.state.reason} 
@@ -125,7 +120,7 @@ class App extends Component {
                         />
                     </Col>
                 </Row>
-                <Row className={this.state.group ? "" : "hidden"}>
+                <Row className={this.props.group ? "" : "hidden"}>
                     <Col xs={12}>
                         <h2>Bababa Feed</h2>
                         <BababaFeed messages={this.state.messages}/>
