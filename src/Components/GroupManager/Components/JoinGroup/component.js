@@ -11,7 +11,7 @@ const JoinGroup = (props) => {
                         onChange={props.textboxOnChange}
                         onKeyPress={props.textboxOnKeyPress}
                         type="text"
-                        placeholder="Start or join a group by picking a name"
+                        placeholder="Group name"
                     />
                     <InputGroup.Button>
                         <Button

@@ -14,6 +14,16 @@ class AppContainer extends Component {
         playing: false
     }
 
+    getQueryParameterByName = (name, url) => {
+        if (!url) url = window.location.href;
+        name = name.replace(/[[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
     playAudio = () => {
         this.setState({playing: true});
     }
@@ -56,9 +66,18 @@ class AppContainer extends Component {
     }
 
     onGroupChange = (newGroup) => {
-        this.setState({group: newGroup});
-        this.readFeed(newGroup);
-        this.subscribeToBababas(newGroup);
+        if (newGroup !== this.state.group) {
+            this.setState({group: newGroup});
+            this.readFeed(newGroup);
+            this.subscribeToBababas(newGroup);
+        }
+    }
+
+    componentWillMount() {
+        let group = this.getQueryParameterByName('group');
+        if (group) {
+            this.onGroupChange(group);
+        }
     }
 
     render() {
