@@ -55,8 +55,7 @@ class AppContainer extends Component {
                     newState.messages = [
                         {
                             message: data.message,
-                            group: group,
-                            createdUts: Math.floor(Date.now() / 1000)
+                            group: group
                         }
                     ].concat(prevState.messages)
                 }

@@ -8,15 +8,13 @@ mongoose.connect('mongodb://' + dbUser + ':' + dbPass + '@ds153521.mlab.com:5352
 
 var airhornFeedSchema = mongoose.Schema({
     message : { type: mongoose.Schema.Types.String, required: false},
-    group : { type: mongoose.Schema.Types.String, required: true},
-    createdUts : { type: mongoose.Schema.Types.Number, required: true, default: Math.floor(Date.now() / 1000) }
-});
+    group : { type: mongoose.Schema.Types.String, required: true}
+}, {timestamps: true});
 
 let processAirhornMessageDocument = (airhornMessageDocument) => {
     return {
         message: airhornMessageDocument.message,
-        group: airhornMessageDocument.group,
-        createdUts: airhornMessageDocument.createdUts
+        group: airhornMessageDocument.group
     }
 };
 
@@ -27,7 +25,7 @@ const FEED_LIMIT = 10;
 AirhornDb.readFeed = (group, callback) => {
     AirhornDb.airhornMessage
         .find({group: group, message: {"$ne": ""}})
-        .sort("-createdUts")
+        .sort("-createdAt")
         .limit(FEED_LIMIT)
         .exec( (err, results) => {
         if (err) { 
