@@ -52,6 +52,7 @@ class GroupManager extends Component {
         }
     }
 
+// lifecycle methods
     componentWillReceiveProps(nextProps) {
         let joinToggleText;
         let textToCopy = "";
@@ -66,6 +67,7 @@ class GroupManager extends Component {
         this.setState({joinToggleText: joinToggleText, textToCopy: textToCopy});
     }
 
+// render
     render() {
         return (
             <div>

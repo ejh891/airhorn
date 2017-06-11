@@ -15,6 +15,7 @@ class App extends Component {
         reason: ""
     };
 
+// group manager events
     groupOnChange = (newGroup) => {
         this.setState({reason: ""});
         this.props.onGroupChange(newGroup);
@@ -43,6 +44,7 @@ class App extends Component {
         this.props.stopAudio();
     }
 
+// render
     render() {
         return(
             <Grid>
