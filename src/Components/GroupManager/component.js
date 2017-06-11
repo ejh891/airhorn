@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 
 import JoinGroup from './Components/JoinGroup/component';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 class GroupManager extends Component {
     state = {
         joinVisible: false,
         groupToJoin: "",
-        joinToggleText: "Join a group"
+        joinToggleText: "Join a group",
+        linkCopied: false
+    }
+
+    onLinkCopy = () => {
+        this.setState({linkCopied: true});
     }
 
     toggleJoinVisibility = () => {
@@ -22,14 +28,17 @@ class GroupManager extends Component {
     }
 
     leaveGroup = () => {
-        this.props.onGroupChange("");
+        this.onGroupChange("");
+    }
+
+    onGroupChange = (newGroup) => {
+        this.setState({groupToJoin: "", joinVisible: false, linkCopied: false});
+        this.props.onGroupChange(newGroup);
     }
 
 // join events
     joinButtonOnClick = () => {
-        this.props.onGroupChange(this.state.groupToJoin);
-        this.setState({groupToJoin: ""});
-        this.hideJoin();
+        this.onGroupChange(this.state.groupToJoin);
     }
 
     joinTextboxOnChange = (e) => {
@@ -45,14 +54,16 @@ class GroupManager extends Component {
 
     componentWillReceiveProps(nextProps) {
         let joinToggleText;
+        let textToCopy = "";
         if (nextProps.groupName) {
             joinToggleText = "Change";
+            textToCopy = "http://bababaworthy.com/?group=" + encodeURIComponent(nextProps.groupName);
         }
         else {
             joinToggleText = "Join a group";
         }
 
-        this.setState({joinToggleText: joinToggleText});
+        this.setState({joinToggleText: joinToggleText, textToCopy: textToCopy});
     }
 
     render() {
@@ -62,6 +73,14 @@ class GroupManager extends Component {
                 <div style={{marginBottom: "10px"}}>
                     <a style={{cursor: "pointer"}} onClick={this.toggleJoinVisibility}>{this.state.joinToggleText}</a>
                     <a style={{cursor: "pointer", marginLeft: "10px"}} onClick={this.leaveGroup} className={this.props.groupName ? "" : "hidden"}>Leave</a>
+                    <span style={{marginLeft: "10px"}} className={this.props.groupName ? "" : "hidden"}>
+                        <CopyToClipboard text={this.state.textToCopy} onCopy={this.onLinkCopy}>
+                            <a style={{cursor: "pointer"}}>Copy Link</a>
+                        </CopyToClipboard>
+                        <span>
+                            {this.state.linkCopied ? <span style={{marginLeft: "10px"}}>Copied!</span> : null}
+                        </span>
+                    </span>
                 </div>
                 <div className={this.state.joinVisible ? "" : "hidden"} >
                     <JoinGroup 

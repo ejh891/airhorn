@@ -12,9 +12,13 @@ import GroupManager from '../GroupManager/component';
 
 class App extends Component {
     state = {
-        playing: this.props.playing,
         reason: ""
     };
+
+    groupOnChange = (newGroup) => {
+        this.setState({reason: ""});
+        this.props.onGroupChange(newGroup);
+    }
 
 // button events
     buttonOnClick = () => {
@@ -44,7 +48,7 @@ class App extends Component {
             <Grid>
                 <Row style={{marginBottom: "40px"}}>
                     <Col xs={12}>
-                        <GroupManager groupName={this.props.group} onGroupChange={this.props.onGroupChange}/>
+                        <GroupManager groupName={this.props.group} onGroupChange={this.groupOnChange}/>
                     </Col>
                 </Row>
                 <Row style={{marginBottom: "20px"}} className={this.props.group ? "" : "hidden"}>
