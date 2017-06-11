@@ -71,7 +71,10 @@ class GroupManager extends Component {
     render() {
         return (
             <div>
-                <h1>{this.props.groupName}</h1>
+                <div id="title" className={this.props.groupName ? "" : "hidden"}>
+                    <div style={{fontSize: "10pt", color: "grey"}}>Now bababa'ing with...</div>
+                    <h1 style={{marginTop: "0"}}>{this.props.groupName}</h1>
+                </div>
                 <div style={{marginBottom: "10px"}}>
                     <a style={{cursor: "pointer"}} onClick={this.toggleJoinVisibility}>{this.state.joinToggleText}</a>
                     <a style={{cursor: "pointer", marginLeft: "10px"}} onClick={this.leaveGroup} className={this.props.groupName ? "" : "hidden"}>Leave</a>
